@@ -37,7 +37,7 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt-api:${jwtVersion}"
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     implementation "com.rometools:rome:2.1.0"
-    implementation "com.google.guava:guava:33.4.8-jre"
+    implementation "com.google.guava:guava:33.5.0-jre"
     runtimeOnly "org.postgresql:postgresql"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
