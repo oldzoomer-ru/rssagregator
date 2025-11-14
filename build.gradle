@@ -25,7 +25,7 @@ repositories {
     mavenCentral()
 }
 
-def jwtVersion = '0.12.6'
+def jwtVersion = '0.13.0'
 def mapstructVersion = '1.6.3'
 
 dependencies {
