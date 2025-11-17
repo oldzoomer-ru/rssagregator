@@ -27,7 +27,7 @@ public class UserController {
     @Operation(summary = "Get JWT token by login and password",
             responses = {
                     @ApiResponse(description = "JWT token for user",
-                            useReturnTypeSchema = true),
+                            responseCode = "200"),
                     @ApiResponse(responseCode = "403",
                             description = "User is not found or incorrect password")
             })

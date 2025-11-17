@@ -26,10 +26,11 @@ public class UserServiceImpl implements UserService {
         String email = user.getEmail();
         String password = user.getPassword();
 
-        User user1 = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found."));
+        User user1 = userRepository.findByEmail(email).orElseThrow(() ->
+                new UserNotFoundException("User not found with email: " + email));
 
         if (!passwordEncoder.matches(password, user1.getPassword())) {
-            throw new IncorrectPasswordException("Incorrect password!");
+            throw new IncorrectPasswordException("Incorrect password for email: " + email);
         }
 
         TokenDto tokenDto = new TokenDto();
@@ -40,12 +41,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void reg(User user) {
-        boolean emailIsExist =
-                userRepository.existsByEmail(user.getEmail());
-
-        if (emailIsExist) {
-            throw new DuplicateUserException("Duplicate E-Mail.");
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new DuplicateUserException("Duplicate E-Mail: " + user.getEmail());
         }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 }
