@@ -1,6 +1,6 @@
 package ru.gavrilovegor519.rssaggregator.controller;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,7 +9,7 @@ import ru.gavrilovegor519.rssaggregator.dto.output.Response;
 import ru.gavrilovegor519.rssaggregator.exception.*;
 
 @ControllerAdvice
-@Log4j2
+@Slf4j
 public class CustomExceptionResolver {
 
     @ExceptionHandler(IncorrectInputDataException.class)
