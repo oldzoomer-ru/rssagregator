@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gavrilovegor519.rssaggregator.ErrorMsg;
 import ru.gavrilovegor519.rssaggregator.dto.output.user.TokenDto;
 import ru.gavrilovegor519.rssaggregator.entity.User;
 import ru.gavrilovegor519.rssaggregator.exception.DuplicateUserException;
@@ -26,26 +27,30 @@ public class UserServiceImpl implements UserService {
         String email = user.getEmail();
         String password = user.getPassword();
 
-        User user1 = userRepository.findByEmail(email).orElseThrow(() ->
-                new UserNotFoundException("User not found with email: " + email));
+        User dbUser = userRepository.findByEmail(email).orElseThrow(() ->
+                new UserNotFoundException(String.format(ErrorMsg.USER_NOT_FOUND, email)));
 
-        if (!passwordEncoder.matches(password, user1.getPassword())) {
-            throw new IncorrectPasswordException("Incorrect password for email: " + email);
-        }
-
-        TokenDto tokenDto = new TokenDto();
-        tokenDto.setToken(jwtUtilities.generateToken(user1.getUsername(), "ROLE_USER"));
-        return tokenDto;
+        validatePassword(password, dbUser.getPassword());
+        return TokenDto.builder()
+                .token(jwtUtilities.generateToken(dbUser.getUsername(), "ROLE_USER"))
+                .build();
     }
 
     @Override
     @Transactional
     public void reg(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new DuplicateUserException("Duplicate E-Mail: " + user.getEmail());
-        }
+        String email = user.getEmail();
 
+        if (userRepository.existsByEmail(email)) {
+            throw new DuplicateUserException(String.format(ErrorMsg.DUPLICATE_USER, email));
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    private void validatePassword(String raw, String encoded) {
+        if (!passwordEncoder.matches(raw, encoded)) {
+            throw new IncorrectPasswordException("Incorrect password for email: " + raw);
+        }
     }
 }

@@ -31,16 +31,17 @@ public final class GetFeed {
      * @return Feed representation
      */
     public static SyndFeed getFeed(String feedUrl) {
-        try (HttpClient client = HttpClient.newHttpClient()) {
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(feedUrl)).build();
-            CompletableFuture<SyndFeed> feed = client
-                    .sendAsync(request, HttpResponse.BodyHandlers.ofInputStream())
-                    .thenApply(HttpResponse::body)
-                    .thenApply(GetFeed::bodyToFeed)
-                    .orTimeout(5, SECONDS);
-            return feed.get();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(feedUrl)).build();
+        CompletableFuture<SyndFeed> feedFuture = client
+                .sendAsync(request, HttpResponse.BodyHandlers.ofInputStream())
+                .thenApply(HttpResponse::body)
+                .thenApply(GetFeed::bodyToFeed)
+                .orTimeout(5, SECONDS);
+        try {
+            return feedFuture.get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new GetFeedException("Can't get feed");
+            throw new GetFeedException("Can't get feed", e);
         }
     }
 

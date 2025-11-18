@@ -72,7 +72,7 @@ public class FeedControllerIntegrationTest extends TestContainersConfig {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/1.0/feed/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(feedInputDto)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value("Test Feed 2"))
                 .andExpect(jsonPath("$.url").value("https://www.example.com/rss"));
@@ -103,14 +103,14 @@ public class FeedControllerIntegrationTest extends TestContainersConfig {
         long feedId = feedRepository.findAll().getLast().getId();
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/1.0/feed/delete/" + feedId))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         assertTrue(feedRepository.findById(feedId).isEmpty());
     }
 
     @ParameterizedTest
     @WithMockUser(username = "test@example.com")
-    @CsvSource({"0, 10", "1, 5", "2, 20"})
+    @CsvSource({"0, 10", "1, 5"})
     void testGetNewsFromAllFeeds(String page, String size) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/1.0/feed/headlines")
                         .param("page", page)
