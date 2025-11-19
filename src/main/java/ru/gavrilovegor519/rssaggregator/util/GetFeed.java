@@ -41,7 +41,10 @@ public final class GetFeed {
         try {
             return feedFuture.get();
         } catch (InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt();
             throw new GetFeedException("Can't get feed", e);
+        } finally {
+            client.close();
         }
     }
 

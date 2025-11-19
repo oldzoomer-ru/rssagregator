@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
-public class FeedControllerIntegrationTest extends TestContainersConfig {
+class FeedControllerIntegrationTest extends TestContainersConfig {
 
     @Autowired
     private MockMvc mockMvc;

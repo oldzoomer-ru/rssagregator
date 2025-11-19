@@ -15,6 +15,7 @@ import ru.gavrilovegor519.rssaggregator.security.JwtUtilities;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -42,7 +43,7 @@ class UserServiceImplTest {
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
-        userService.login(loginDto);
+        assertDoesNotThrow(() -> userService.login(loginDto));
     }
 
     @Test

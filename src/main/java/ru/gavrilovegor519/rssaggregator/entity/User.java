@@ -27,7 +27,7 @@ public class User implements UserDetails {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @Setter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.NONE)
     private List<Feed> feeds = new ArrayList<>();
 
     @Override

@@ -6,7 +6,7 @@ ARG BUILD_HOME=/build
 #
 # Gradle image for the build stage.
 #
-FROM gradle:jdk21-alpine as build-image
+FROM gradle:jdk21-alpine AS build-image
 
 #
 # Set the working directory.
