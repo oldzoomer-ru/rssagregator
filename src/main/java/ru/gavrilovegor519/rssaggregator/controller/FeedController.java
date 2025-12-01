@@ -42,8 +42,8 @@ public class FeedController {
                             description = "User is not authenticated")
             })
     public ResponseEntity<FeedOutputDto> addFeed(@Parameter(description = "Feed data", required = true)
-                            @RequestBody @Valid FeedInputDto dto,
-                        Authentication authentication) {
+                                                     @RequestBody @Valid FeedInputDto dto,
+                                                 Authentication authentication) {
         Feed feed = feedMapper.map(dto);
         Feed added = feedService.addFeed(feed, authentication.getName());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -74,8 +74,8 @@ public class FeedController {
                             description = "User is not authenticated")
             })
     public ResponseEntity<Void> deleteFeed(@Parameter(description = "Feed id", required = true)
-                               @PathVariable long id,
-                           Authentication authentication) {
+                                               @PathVariable long id,
+                                           Authentication authentication) {
         feedService.deleteFeed(id, authentication.getName());
         return ResponseEntity.noContent().build();
     }
@@ -91,10 +91,11 @@ public class FeedController {
                             description = "User is not authenticated")
             })
     public ResponseEntity<Page<NewsEntryDto>> getNewsFromAllFeeds(Authentication authentication,
-                                                                  @Parameter(description = "Page number", required = true)
-                                                  @RequestParam(defaultValue = "0") int page,
+                                                                  @Parameter(
+                                                                          description = "Page number", required = true)
+                                                                  @RequestParam(defaultValue = "0") int page,
                                                                   @Parameter(description = "Page size", required = true)
-                                                  @RequestParam(defaultValue = "10") int size) {
+                                                                      @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(feedService.getNewsHeadings(authentication.getName(), pageable));
     }
