@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.gavrilovegor519.rssaggregator.dto.output.Response;
-import ru.gavrilovegor519.rssaggregator.exception.*;
+import ru.gavrilovegor519.rssaggregator.exception.DuplicateFeedException;
+import ru.gavrilovegor519.rssaggregator.exception.GetFeedException;
+import ru.gavrilovegor519.rssaggregator.exception.IncorrectInputDataException;
+import ru.gavrilovegor519.rssaggregator.exception.UserNotFoundException;
 
 @ControllerAdvice
 @Slf4j
@@ -24,14 +27,14 @@ public class CustomExceptionResolver {
         return ResponseEntity.ok(e.getMessage());
     }
 
-    @ExceptionHandler({DuplicateUserException.class, DuplicateFeedException.class})
+    @ExceptionHandler({DuplicateFeedException.class})
     public ResponseEntity<Response> conflictHandler(Throwable e) {
         log.error(e.getMessage());
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler({IncorrectPasswordException.class, UserNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class})
     public ResponseEntity<Response> forbiddenHandler(Throwable e) {
         log.error(e.getMessage());
         Response response = new Response(e.getMessage());

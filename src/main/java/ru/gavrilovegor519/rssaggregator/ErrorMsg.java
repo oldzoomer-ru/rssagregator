@@ -4,7 +4,7 @@ public final class ErrorMsg {
     public static final String USER_NOT_FOUND = "User not found with email: %s";
     public static final String DUPLICATE_FEED = "Feed already exists!";
     public static final String FEED_NOT_FOUND = "Feed not found with id: %d";
-    public static final String DUPLICATE_USER = "Duplicate E-Mail: %s";
+
     private ErrorMsg() {
     }
 }

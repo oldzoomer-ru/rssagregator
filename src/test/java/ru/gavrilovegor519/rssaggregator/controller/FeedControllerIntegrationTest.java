@@ -1,33 +1,32 @@
 package ru.gavrilovegor519.rssaggregator.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.gavrilovegor519.rssaggregator.config.TestContainersConfig;
 import ru.gavrilovegor519.rssaggregator.dto.input.feed.FeedInputDto;
 import ru.gavrilovegor519.rssaggregator.entity.Feed;
 import ru.gavrilovegor519.rssaggregator.entity.User;
 import ru.gavrilovegor519.rssaggregator.exception.UserNotFoundException;
 import ru.gavrilovegor519.rssaggregator.repo.FeedRepo;
 import ru.gavrilovegor519.rssaggregator.repo.UserRepo;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc(printOnlyOnFailure = false)
-class FeedControllerIntegrationTest extends TestContainersConfig {
+@AutoConfigureMockMvc
+class FeedControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,7 +43,6 @@ class FeedControllerIntegrationTest extends TestContainersConfig {
     @BeforeEach
     void setupTest() {
         User user = new User();
-        user.setPassword("password");
         user.setEmail("test@example.com");
 
         Feed feed = new Feed();

@@ -1,8 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.7'
+    id 'org.springframework.boot' version '4.0.0'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'io.freefair.lombok' version '9.1.0'
 }
 
 group = 'ru.gavrilovegor519'
@@ -25,29 +24,33 @@ repositories {
     mavenCentral()
 }
 
-def jwtVersion = '0.13.0'
 def mapstructVersion = '1.6.3'
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation "org.springframework.boot:spring-boot-starter-validation"
-    implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.14"
-    implementation "io.jsonwebtoken:jjwt-api:${jwtVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-webmvc"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0"
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    runtimeOnly "org.postgresql:postgresql"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    testRuntimeOnly "com.h2database:h2"
+    testImplementation "org.springframework.boot:spring-boot-starter-data-jpa-test"
+    testImplementation "org.springframework.boot:spring-boot-starter-security-test"
+    testImplementation "org.springframework.boot:spring-boot-starter-validation-test"
+    testImplementation "org.springframework.boot:spring-boot-starter-webmvc-test"
+    testImplementation "org.testcontainers:testcontainers-junit-jupiter"
+    testImplementation "org.testcontainers:testcontainers-postgresql"
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+
     implementation "com.rometools:rome:2.1.0"
     implementation "com.google.guava:guava:33.5.0-jre"
     runtimeOnly "org.postgresql:postgresql"
-    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
-    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
-    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation "org.springframework.security:spring-security-test"
-    testImplementation "org.testcontainers:junit-jupiter"
-    testImplementation "org.testcontainers:postgresql"
-    testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 tasks.named('test') {

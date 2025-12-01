@@ -9,6 +9,4 @@ import java.util.Optional;
 public interface UserRepo extends JpaRepository<User, Long> {
     @EntityGraph(attributePaths = "feeds")
     Optional<User> findByEmail(String email);
-
-    boolean existsByEmail(String email);
 }
