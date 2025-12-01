@@ -9,7 +9,6 @@ import ru.gavrilovegor519.rssaggregator.dto.output.Response;
 import ru.gavrilovegor519.rssaggregator.exception.DuplicateFeedException;
 import ru.gavrilovegor519.rssaggregator.exception.GetFeedException;
 import ru.gavrilovegor519.rssaggregator.exception.IncorrectInputDataException;
-import ru.gavrilovegor519.rssaggregator.exception.UserNotFoundException;
 
 @ControllerAdvice
 @Slf4j
@@ -32,13 +31,6 @@ public class CustomExceptionResolver {
         log.error(e.getMessage());
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler({UserNotFoundException.class})
-    public ResponseEntity<Response> forbiddenHandler(Throwable e) {
-        log.error(e.getMessage());
-        Response response = new Response(e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(Throwable.class)

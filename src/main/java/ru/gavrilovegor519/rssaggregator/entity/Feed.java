@@ -22,9 +22,8 @@ public class Feed {
     @Column(name = "url", unique = true, nullable = false)
     private String url;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feeds_id")
-    private User user;
+    @Column(name = "email", nullable = false, length = 50)
+    private String email;
 
     @Override
     public boolean equals(Object o) {

@@ -14,10 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.gavrilovegor519.rssaggregator.dto.input.feed.FeedInputDto;
 import ru.gavrilovegor519.rssaggregator.entity.Feed;
-import ru.gavrilovegor519.rssaggregator.entity.User;
-import ru.gavrilovegor519.rssaggregator.exception.UserNotFoundException;
 import ru.gavrilovegor519.rssaggregator.repo.FeedRepo;
-import ru.gavrilovegor519.rssaggregator.repo.UserRepo;
 import tools.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,26 +34,18 @@ class FeedControllerIntegrationTest {
     @Autowired
     private FeedRepo feedRepository;
 
-    @Autowired
-    private UserRepo userRepository;
-
     @BeforeEach
     void setupTest() {
-        User user = new User();
-        user.setEmail("test@example.com");
-
         Feed feed = new Feed();
         feed.setName("Test Feed");
         feed.setUrl("https://www.opennet.ru/opennews/opennews_all_noadv.rss");
+        feed.setEmail("test@example.com");
 
-        user.addFeed(feed);
-
-        userRepository.save(user);
+        feedRepository.save(feed);
     }
 
     @AfterEach
     void tearDown() {
-        userRepository.deleteAll();
         feedRepository.deleteAll();
     }
 
@@ -75,10 +64,9 @@ class FeedControllerIntegrationTest {
                 .andExpect(jsonPath("$.name").value("Test Feed 2"))
                 .andExpect(jsonPath("$.url").value("https://www.example.com/rss"));
 
-        User user = userRepository.findByEmail("test@example.com").orElseThrow(UserNotFoundException::new);
-        Feed feed = user.getFeeds().stream().toList().getLast();
+        Feed feed = feedRepository.findByEmail("test@example.com").stream().toList().getLast();
 
-        assertFalse(user.getFeeds().isEmpty());
+        assertFalse(feedRepository.findByEmail("test@example.com").isEmpty());
         assertEquals("Test Feed 2", feed.getName());
         assertEquals("https://www.example.com/rss", feed.getUrl());
         assertTrue(feedRepository.findById(feed.getId()).isPresent());
