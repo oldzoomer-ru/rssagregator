@@ -6,7 +6,7 @@ ARG BUILD_HOME=/build
 #
 # Gradle image for the build stage.
 #
-FROM gradle:jdk21-alpine AS build-image
+FROM eclipse-temurin:21-jdk-alpine AS build-image
 
 #
 # Set the working directory.
@@ -16,21 +16,29 @@ ENV APP_HOME=$BUILD_HOME
 WORKDIR $APP_HOME
 
 #
-# Copy the Gradle config, source code, and static analysis config
+# Copy only build files first to cache dependencies
+#
+COPY gradle $APP_HOME/gradle/
+COPY gradlew $APP_HOME/
+RUN ./gradlew --no-daemon --version
+
+#
+# Copy the Gradle configs and source code
 # into the build container.
 #
-COPY --chown=gradle:gradle build.gradle settings.gradle $APP_HOME/
-COPY --chown=gradle:gradle src $APP_HOME/src
+COPY build.gradle settings.gradle $APP_HOME/
+RUN ./gradlew --no-daemon :dependencies
 
 #
 # Build the application.
 #
-RUN gradle --no-daemon build -x test
+COPY src/main/ $APP_HOME/src/main/
+RUN ./gradlew --no-daemon build -x check
 
 #
 # Java image for the application to run in.
 #
-FROM eclipse-temurin:21-jre-alpine
+FROM gcr.io/distroless/java21-debian12
 
 #
 # Copy the jar file in and name it app.jar.

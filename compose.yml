@@ -1,24 +1,23 @@
 services:
   app:
-    image: 'rssagregator-docker:latest'
     build:
       context: .
     depends_on:
       - db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/rssagregator
-      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME:-user}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD:-qwerty}
     ports:
       - "8080:8080"
     networks:
       - rssagregator
 
   db:
-    image: postgres:16-alpine
+    image: postgres:alpine
     environment:
-      - POSTGRES_USER=${SPRING_DATASOURCE_USERNAME}
-      - POSTGRES_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - POSTGRES_USER=${SPRING_DATASOURCE_USERNAME:-user}
+      - POSTGRES_PASSWORD=${SPRING_DATASOURCE_PASSWORD:-qwerty}
       - PGDATA=/data/postgres
       - POSTGRES_DB=rssagregator
     volumes:
