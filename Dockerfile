@@ -38,7 +38,7 @@ RUN ./gradlew --no-daemon build -x check
 #
 # Java image for the application to run in.
 #
-FROM gcr.io/distroless/java21-debian12
+FROM gcr.io/distroless/java21-debian13:nonroot
 
 #
 # Copy the jar file in and name it app.jar.
@@ -50,4 +50,4 @@ COPY --from=build-image $APP_HOME/build/libs/rssaggregator-0.0.1-SNAPSHOT.jar ap
 #
 # The command to run when the container starts.
 #
-CMD ["java", "-jar", "app.jar"]
+CMD ["app.jar"]
