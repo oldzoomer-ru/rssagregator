@@ -1,10 +1,11 @@
 package ru.gavrilovegor519.rssaggregator.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import lombok.extern.slf4j.Slf4j;
 import ru.gavrilovegor519.rssaggregator.dto.output.Response;
 import ru.gavrilovegor519.rssaggregator.exception.DuplicateFeedException;
 import ru.gavrilovegor519.rssaggregator.exception.GetFeedException;
@@ -31,13 +32,6 @@ public class CustomExceptionResolver {
         log.error(e.getMessage());
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(Throwable.class)
-    public ResponseEntity<Response> otherHandler(Throwable e) {
-        log.error(e.getMessage());
-        Response response = new Response(e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
