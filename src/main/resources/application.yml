@@ -13,7 +13,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_URL:http://localhost:8081/realms/rssaggregator}
+          issuer-uri: ${KEYCLOAK_ISSUER_URL:http://keycloak:8080/auth/realms/tasks}
 springdoc:
   swagger-ui:
     path: /api-docs.html
