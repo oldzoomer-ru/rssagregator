@@ -6,7 +6,7 @@ ARG BUILD_HOME=/build
 #
 # Gradle image for the build stage.
 #
-FROM eclipse-temurin:21-jdk-alpine AS build-image
+FROM eclipse-temurin:25-jdk-alpine AS build-image
 
 #
 # Set the working directory.
@@ -38,7 +38,7 @@ RUN ./gradlew --no-daemon build -x check
 #
 # Java image for the application to run in.
 #
-FROM gcr.io/distroless/java21-debian13:nonroot
+FROM gcr.io/distroless/java25-debian13:nonroot
 
 #
 # Copy the jar file in and name it app.jar.
