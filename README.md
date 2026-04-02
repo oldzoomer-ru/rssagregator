@@ -1,7 +1,5 @@
 # rssaggregator
 
-**This project is very old, and deprecated.**
-
 This is an online RSS aggregator REST service based on Java/Spring.
 
 ## Run
